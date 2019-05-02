@@ -14,7 +14,9 @@ class TaskCreator {
 class TodoList extends React.Component {
 
     state = {
-        tasks: [],
+        tasks: [
+            new TaskCreator("Ir a Ironhack")
+        ],
         newTaskText: ""
     }
 
@@ -37,6 +39,16 @@ class TodoList extends React.Component {
         })
     }
 
+    setStatusAsDone(taskIndex) {
+        const allTasks = [...this.state.tasks]
+        allTasks[taskIndex].done = !allTasks[taskIndex].done
+
+        this.setState({
+            ...this.state,
+            tasks: allTasks
+        })
+    }
+
     render() {
         return (
             <div className="todo-list">
@@ -46,24 +58,18 @@ class TodoList extends React.Component {
                     <input type="button" value="Add new task" onClick={() => this.addNewTask()}></input>
                 </form>
                 <section className="not-done-tasks">
-                    <h3>To do items ({this.state.tasks.length})</h3>
+                    <h3>To do items ({this.state.tasks.filter(task=>task.done === false).length})</h3>
                     <ul>
                         {
                             this.state.tasks.map((task, idx) => {
                                 return (
                                     <li key={idx}>
-                                        <Task idx={idx + 1} taskStr={task.taskStr} creationTimestamp={task.creationTimestamp} done={task.done} />
+                                        <Task onTaskStatusChange={(taskIndex) => this.setStatusAsDone(taskIndex)} idx={idx + 1} taskStr={task.taskStr} creationTimestamp={task.creationTimestamp} done={task.done} />
                                     </li>)
                             })
                         }
                     </ul>
                 </section>
-                {/* <ul className="done-tasks">
-                    <li><Task taskStr="test1" creationTimestamp={new Date().toString()} done={true} /></li>
-                    <li><Task taskStr="test1" creationTimestamp={new Date().toString()} done={true} /></li>
-                    <li><Task taskStr="test1" creationTimestamp={new Date().toString()} done={true} /></li>
-                    <li><Task taskStr="test1" creationTimestamp={new Date().toString()} done={true} /></li>
-                </ul> */}
             </div>
         )
     }
