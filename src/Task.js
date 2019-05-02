@@ -8,6 +8,10 @@ class Task extends React.Component {
         this.props.onTaskStatusChange(this.props.idx - 1)
     }
 
+    componentDidMount(){
+        console.log("Hola, montada una task")
+    }
+
     render() {
         return (
             <div className={"task " + (this.props.done ? 'done' : null)}>

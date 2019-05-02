@@ -1,6 +1,7 @@
 import React from 'react';
 import Task from './Task';
 import moment from "moment"
+import axios from "axios"
 import "./TodoList.css"
 
 class TaskCreator {
@@ -14,22 +15,22 @@ class TaskCreator {
 class TodoList extends React.Component {
 
     state = {
-        tasks: [
-            new TaskCreator("Ir a Ironhack")
-        ],
+        tasks: [],
         newTaskText: ""
     }
 
     addNewTask() {
         if (this.state.newTaskText.trim().length === 0) return;
 
-        const tasksWithNewTask = [...this.state.tasks]
-        tasksWithNewTask.push(new TaskCreator(this.state.newTaskText))
-        this.setState({
-            ...this.state,
-            tasks: tasksWithNewTask,
-            newTaskText: ""
-        })
+        axios
+            .post("http://localhost:4000/task", {taskStr: this.state.newTaskText})
+            .then(allTheTasks => {
+                this.setState({
+                    ...this.state,
+                    tasks: allTheTasks.data,
+                    newTaskText: ""
+                })
+            })
     }
 
     onNewTaskInputChange(e) {
@@ -49,6 +50,19 @@ class TodoList extends React.Component {
         })
     }
 
+    componentDidMount(){
+        axios
+            .get("http://localhost:4000/tasks")
+            .then(allTasksPayload => {
+                const allTasks = allTasksPayload.data
+
+                this.setState({
+                    ...this.state,
+                    tasks: allTasks
+                })
+            })
+    }
+
     render() {
         return (
             <div className="todo-list">
@@ -64,7 +78,7 @@ class TodoList extends React.Component {
                             this.state.tasks.map((task, idx) => {
                                 return (
                                     <li key={idx}>
-                                        <Task onTaskStatusChange={(taskIndex) => this.setStatusAsDone(taskIndex)} idx={idx + 1} taskStr={task.taskStr} creationTimestamp={task.creationTimestamp} done={task.done} />
+                                        <Task onTaskStatusChange={(taskIndex) => this.setStatusAsDone(taskIndex)} idx={idx + 1} taskStr={task.taskStr} creationTimestamp={moment(task.createdAt).format("DD/MM/YYYY hh:mm")} done={task.done} />
                                     </li>)
                             })
                         }
