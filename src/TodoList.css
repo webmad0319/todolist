@@ -3,13 +3,26 @@
     flex-direction: column;
 }
 
+.todo-list h1,
+.todo-list h3 {
+    margin-bottom: 20px;
+}
+
+.todo-list input[type=text] {
+    margin-right: 10px;
+    padding: 5px;
+}
+
 .todo-list .task{
     margin-bottom: 20px;
 }
 
+.todo-list .not-done-tasks {
+    padding: 20px;
+}
+
 .todo-list ul {
     list-style-type: none;
-    padding: 20px;
 }
 
 .todo-list form {

@@ -19,7 +19,7 @@ class TodoList extends React.Component {
     }
 
     addNewTask() {
-        if (this.state.newTaskText.trim().length === 0)    return;
+        if (this.state.newTaskText.trim().length === 0) return;
 
         const tasksWithNewTask = [...this.state.tasks]
         tasksWithNewTask.push(new TaskCreator(this.state.newTaskText))
@@ -45,16 +45,19 @@ class TodoList extends React.Component {
                     <input type="text" placeholder="Add a new task" value={this.state.newTaskText} onChange={(e) => this.onNewTaskInputChange(e)}></input>
                     <input type="button" value="Add new task" onClick={() => this.addNewTask()}></input>
                 </form>
-                <ul className="not-done-tasks">
-                    {
-                        this.state.tasks.map((task, idx) => {
-                            return (
-                                <li key={idx}>
-                                    <Task idx={idx + 1} taskStr={task.taskStr} creationTimestamp={task.creationTimestamp} done={task.done} />
-                                </li>)
-                        })
-                    }
-                </ul>
+                <section className="not-done-tasks">
+                    <h3>To do items ({this.state.tasks.length})</h3>
+                    <ul>
+                        {
+                            this.state.tasks.map((task, idx) => {
+                                return (
+                                    <li key={idx}>
+                                        <Task idx={idx + 1} taskStr={task.taskStr} creationTimestamp={task.creationTimestamp} done={task.done} />
+                                    </li>)
+                            })
+                        }
+                    </ul>
+                </section>
                 {/* <ul className="done-tasks">
                     <li><Task taskStr="test1" creationTimestamp={new Date().toString()} done={true} /></li>
                     <li><Task taskStr="test1" creationTimestamp={new Date().toString()} done={true} /></li>

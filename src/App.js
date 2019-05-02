@@ -4,7 +4,9 @@ import TodoList from './TodoList';
 class App extends React.Component {
   render() {
     return (
-      <TodoList></TodoList>
+      <React.Fragment>
+        <TodoList></TodoList>
+      </React.Fragment>
     )
   }
 }
