@@ -14,12 +14,27 @@ class TaskCreator {
 class TodoList extends React.Component {
 
     state = {
-        tasks: [
-            new TaskCreator("Ir a la compra"),
-            new TaskCreator("Ir al peluquero"),
-            new TaskCreator("Ir al peluquero"),
-            new TaskCreator("Dar cariño a mi hijo adolescente")
-        ]
+        tasks: [],
+        newTaskText: ""
+    }
+
+    addNewTask() {
+        if (this.state.newTaskText.trim().length === 0)    return;
+
+        const tasksWithNewTask = [...this.state.tasks]
+        tasksWithNewTask.push(new TaskCreator(this.state.newTaskText))
+        this.setState({
+            ...this.state,
+            tasks: tasksWithNewTask,
+            newTaskText: ""
+        })
+    }
+
+    onNewTaskInputChange(e) {
+        this.setState({
+            ...this.state,
+            newTaskText: e.target.value
+        })
     }
 
     render() {
@@ -27,8 +42,8 @@ class TodoList extends React.Component {
             <div className="todo-list">
                 <form>
                     <h1>Todo list App ({this.state.tasks.length})</h1>
-                    <input type="text"></input>
-                    <input type="button" value="Add new task"></input>
+                    <input type="text" placeholder="Add a new task" value={this.state.newTaskText} onChange={(e) => this.onNewTaskInputChange(e)}></input>
+                    <input type="button" value="Add new task" onClick={() => this.addNewTask()}></input>
                 </form>
                 <ul className="not-done-tasks">
                     {
